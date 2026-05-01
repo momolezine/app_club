@@ -1,7 +1,13 @@
-<h1>JSOG Inscription</h1>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<form method="POST">
-<input name="username" placeholder="Nom">
-<input type="password" name="password" placeholder="Mot de passe">
-<button>S'inscrire</button>
-</form>
+<div class="container">
+    <h1>Créer un compte</h1>
+
+    <div class="card">
+        <form method="POST">
+            <input name="username" placeholder="Utilisateur">
+            <input type="password" name="password" placeholder="Mot de passe">
+            <button>S'inscrire</button>
+        </form>
+    </div>
+</div>

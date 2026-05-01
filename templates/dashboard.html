@@ -1,50 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-
-<body>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 <div class="container">
 
-    <h1>📊 JSOG Déplacements</h1>
+<h1>JSOG Déplacements</h1>
 
-    <div class="card">
-        <form method="POST" action="/add">
-            <input name="date" placeholder="Date (01/05/2026)">
-            <input name="motif" placeholder="Motif">
-            <input name="km" placeholder="Kilomètres">
-            <button>Ajouter déplacement</button>
-        </form>
-    </div>
+<div class="card">
+<form method="POST">
+    <input type="date" name="date">
+    <input name="motif" placeholder="Motif">
+    <input name="km" placeholder="KM">
+    <button>Ajouter</button>
+</form>
+</div>
 
-    <div class="card">
-        <h2>Liste des déplacements</h2>
+<div class="card">
 
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Motif</th>
-                <th>KM</th>
-            </tr>
+<h2>Mes déplacements</h2>
 
-            {% for d in deplacements %}
-            <tr>
-                <td>{{ d.date }}</td>
-                <td>{{ d.motif }}</td>
-                <td>{{ d.km }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+{% for d in deplacements %}
+<p>{{ d.date }} - {{ d.motif }} - {{ d.km }} km</p>
+{% endfor %}
 
-        <br>
-        <a href="/pdf">📄 Télécharger PDF</a>
-        <br><br>
-        <a href="/logout">🚪 Déconnexion</a>
-    </div>
+<br>
+
+<form action="/pdf">
+    <input type="month" name="mois">
+    <button>📄 PDF mensuel</button>
+</form>
 
 </div>
 
-</body>
-</html>
+<a href="/logout">Déconnexion</a>
+
+</div>

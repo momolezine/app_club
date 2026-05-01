@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<body>
 <div class="container">
-    <h1>JSOG Déplacement</h1>
+    <h1>JSOG Connexion</h1>
 
     <div class="card">
         <form method="POST">
             <input name="username" placeholder="Utilisateur">
-            <input name="password" placeholder="Mot de passe" type="password">
+            <input type="password" name="password" placeholder="Mot de passe">
             <button>Connexion</button>
         </form>
+        <a href="/register">Créer un compte</a>
     </div>
 </div>
-</body>
-</html>
