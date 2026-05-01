@@ -1,24 +1,50 @@
-<h1>JSOG Déplacements</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 
-<form method="POST">
-<input type="date" name="date">
-<input name="lieu" placeholder="Lieu">
-<input name="km" placeholder="Km">
-<button>Ajouter</button>
-</form>
+<body>
 
-<hr>
+<div class="container">
 
-{% for mois, liste in frais_par_mois.items() %}
-<h2>{{ mois }}</h2>
+    <h1>📊 JSOG Déplacements</h1>
 
-{% for f in liste %}
-<p>{{ f.date }} - {{ f.lieu }} - {{ f.km }} km - {{ f.montant }} €</p>
-{% endfor %}
+    <div class="card">
+        <form method="POST" action="/add">
+            <input name="date" placeholder="Date (01/05/2026)">
+            <input name="motif" placeholder="Motif">
+            <input name="km" placeholder="Kilomètres">
+            <button>Ajouter déplacement</button>
+        </form>
+    </div>
 
-<a href="/pdf/{{ mois }}">PDF</a>
+    <div class="card">
+        <h2>Liste des déplacements</h2>
 
-<hr>
-{% endfor %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Motif</th>
+                <th>KM</th>
+            </tr>
 
-<a href="/logout">Logout</a>
+            {% for d in deplacements %}
+            <tr>
+                <td>{{ d.date }}</td>
+                <td>{{ d.motif }}</td>
+                <td>{{ d.km }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <a href="/pdf">📄 Télécharger PDF</a>
+        <br><br>
+        <a href="/logout">🚪 Déconnexion</a>
+    </div>
+
+</div>
+
+</body>
+</html>

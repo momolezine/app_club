@@ -102,44 +102,31 @@ def dashboard():
     return render_template("dashboard.html", frais_par_mois=frais_par_mois)
 
 # ---------- PDF ----------
-@app.route("/pdf/<mois>")
+@app.route('/pdf')
 @login_required
-def pdf(mois):
-    frais = Frais.query.filter_by(user_id=current_user.id).all()
+def generate_pdf():
+    filename = "deplacements.pdf"
+    c = canvas.Canvas(filename)
 
-    data = [["Date", "Lieu", "Km", "Montant €"]]
-    total = 0
+    y = 800
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(200, y, "JSOG - Rapport de déplacements")
+    y -= 40
 
-    for f in frais:
-        if f.date.startswith(mois):
-            data.append([f.date, f.lieu, f.km, f"{f.montant:.2f}"])
-            total += f.montant
+    c.setFont("Helvetica", 12)
 
-    doc = SimpleDocTemplate("frais.pdf", pagesize=A4)
-    styles = getSampleStyleSheet()
-    elements = []
+    total_km = 0
 
-    elements.append(Paragraph("JSOG - NOTE DE FRAIS", styles["Title"]))
-    elements.append(Paragraph(f"Coach : {current_user.username}", styles["Normal"]))
-    elements.append(Paragraph(f"Mois : {mois}", styles["Normal"]))
+    for d in Deplacement.query.all():
+        c.drawString(50, y, f"{d.date} | {d.motif} | {d.km} km")
+        total_km += d.km
+        y -= 20
 
-    elements.append(Spacer(1, 20))
+    y -= 20
+    c.drawString(50, y, f"TOTAL KM : {total_km} km")
 
-    table = Table(data)
-    table.setStyle([
-        ("BACKGROUND", (0,0), (-1,0), colors.black),
-        ("TEXTCOLOR", (0,0), (-1,0), colors.yellow),
-        ("GRID", (0,0), (-1,-1), 1, colors.black),
-    ])
-
-    elements.append(table)
-    elements.append(Spacer(1, 20))
-    elements.append(Paragraph(f"TOTAL : {total:.2f} €", styles["Heading1"]))
-
-    doc.build(elements)
-
-    return send_file("frais.pdf", as_attachment=True)
-
+    c.save()
+    return send_file(filename, as_attachment=True)
 # ---------- LOGOUT ----------
 @app.route("/logout")
 @login_required
